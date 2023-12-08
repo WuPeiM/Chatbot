@@ -2,6 +2,7 @@ const Bot = () => import('@chatbot/views/bot/index.vue')
 const Intention = () => import('@/projects/chatbot/views/intention/index.vue')
 const Response = () => import('@/projects/chatbot/views/response/index.vue')
 const Story = () => import('@/projects/chatbot/views/story/index.vue')
+const StoryDetail = () => import('@/projects/chatbot/views/story/editStory.vue')
 
 const routerPrefix = 'chatbot'
 
@@ -34,6 +35,11 @@ export const frameRouter = [
         path: `/${routerPrefix}/story`,
         name: 'Story',
         component: Story
+    },
+    {
+        path: `/${routerPrefix}/story/detail`,
+        name: 'StoryDetail',
+        component: StoryDetail
     }
 ]
 
@@ -57,6 +63,10 @@ export const adminRouteConfig = [
             {
                 name: '故事',
                 id: 'Story'
+            },
+            {
+                name: '故事详情',
+                id: 'StoryDetail'
             }
         ]
     }
