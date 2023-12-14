@@ -1,0 +1,324 @@
+[
+    {
+        "probeType": "Packetbeat",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default": "# =============================== Network device ===============================\npacketbeat.interfaces.device: any\npacketbeat.interfaces.poll_default_route: 1m\npacketbeat.interfaces.internal_networks:\n  - private\n# =================================== Flows ====================================\npacketbeat.flows:\n  # Set network flow timeout. Flow is killed if no packet is received before being\n  # timed out.\n  timeout: 30s\n\n  # Configure reporting period. If set to -1s, only killed flows will be reported\n  period: 10s\n\n# =========================== Transaction protocols ============================\n\npacketbeat.protocols:\n- type: icmp\n  # Enable ICMPv4 and ICMPv6 monitoring. The default is true.\n  enabled: true\n\n- type: amqp\n  # Configure the ports where to listen for AMQP traffic. You can disable\n  # the AMQP protocol by commenting out the list of ports.\n  ports: [5672]\n\n- type: cassandra\n  # Configure the ports where to listen for Cassandra traffic. You can disable\n  # the Cassandra protocol by commenting out the list of ports.\n  ports: [9042]\n\n- type: dhcpv4\n  # Configure the DHCP for IPv4 ports.\n  ports: [67, 68]\n\n- type: dns\n  # Configure the ports where to listen for DNS traffic. You can disable\n  # the DNS protocol by commenting out the list of ports.\n  ports: [53]\n\n- type: http\n  # Configure the ports where to listen for HTTP traffic. You can disable\n  # the HTTP protocol by commenting out the list of ports.\n  ports: [80, 8080, 8000, 5000, 8002]\n\n- type: memcache\n  # Configure the ports where to listen for memcache traffic. You can disable\n  # the Memcache protocol by commenting out the list of ports.\n  ports: [11211]\n\n- type: mysql\n  # Configure the ports where to listen for MySQL traffic. You can disable\n  # the MySQL protocol by commenting out the list of ports.\n  ports: [3306,3307]\n\n- type: pgsql\n  # Configure the ports where to listen for Pgsql traffic. You can disable\n  # the Pgsql protocol by commenting out the list of ports.\n  ports: [5432]\n\n- type: redis\n  # Configure the ports where to listen for Redis traffic. You can disable\n  # the Redis protocol by commenting out the list of ports.\n  ports: [6379]\n\n- type: thrift\n  # Configure the ports where to listen for Thrift-RPC traffic. You can disable\n  # the Thrift-RPC protocol by commenting out the list of ports.\n  ports: [9090]\n\n- type: mongodb\n  # Configure the ports where to listen for MongoDB traffic. You can disable\n  # the MongoDB protocol by commenting out the list of ports.\n  ports: [27017]\n\n- type: nfs\n  # Configure the ports where to listen for NFS traffic. You can disable\n  # the NFS protocol by commenting out the list of ports.\n  ports: [2049]\n\n- type: tls\n  # Configure the ports where to listen for TLS traffic. You can disable\n  # the TLS protocol by commenting out the list of ports.\n  ports:\n    - 443   # HTTPS\n    - 993   # IMAPS\n    - 995   # POP3S\n    - 5223  # XMPP over SSL\n    - 8443\n    - 8883  # Secure MQTT\n    - 9243  # Elasticsearch\n\n- type: sip\n  # Configure the ports where to listen for SIP traffic. You can disable\n  # the SIP protocol by commenting out the list of ports.\n  ports: [5060]\n# ======================= Elasticsearch template setting =======================\nsetup.template.settings:\n  index.number_of_shards: 1\n  #index.codec: best_compression\n  #_source.enabled: false\n# ================================== Outputs ===================================\noutput.kafka:\n  hosts: [{{host}}]\n  topic: 'packetbeat'\n  compression: gzip\n# ================================= Processors =================================\nprocessors:\n  - add_host_metadata: ~\n  - add_cloud_metadata: ~\n  - add_docker_metadata: ~"
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "ICMP流量数据",
+        "templateId": "icmp",
+        "field": [
+            {
+                "name": "启用ICMP流量监测",
+                "key": "icmp.enabled",
+                "type": "boolean",
+                "desc": "是否启用ICMPv4和ICMPv6流量监测",
+                "default": true
+
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "AMQP流量数据",
+        "templateId": "amqp",
+        "field": [
+            {
+                "name": "启用AMQP流量监测",
+                "key": "amqp.enabled",
+                "type": "boolean",
+                "desc": "是否启用AMQP流量监测",
+                "default": true
+            },
+            {
+                "name": "端口",
+                "key": "amqp.ports",
+                "type": "list.int",
+                "desc": "配置侦听AMQP流量的端口，多个端口用逗号分隔。",
+                "default": [5672]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "Cassandra流量数据",
+        "templateId": "cassandra",
+        "field": [
+            {
+                "name": "启用Cassandra流量监测",
+                "key": "cassandra.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用Cassandra流量监测",
+                "default": true
+            },
+            {
+                "name": "Cassandra端口",
+                "key": "cassandra.ports",
+                "type": "list.int",
+                "desc": "配置监听Cassandra流量的端口，多个端口用逗号分隔。",
+                "default": [9042]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "DHCPv4流量数据",
+        "templateId": "dhcpv4",
+        "field": [
+            {
+                "name": "启用DHCPv4流量监测",
+                "key": "dhcpv4.enabled",
+                "type": "boolean",
+                "desc": "是否为IPv4端口配置DHCP",
+                "default": true
+            },
+            {
+                "name": "DHCPv4端口",
+                "key": "dhcpv4.ports",
+                "type": "list.int",
+                "desc": "配置监听为IPv4端口配置的DHCP流量端口，多个端口用逗号分隔。",
+                "default": [67, 68]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "DNS流量数据",
+        "templateId": "dns",
+        "field": [
+            {
+                "name": "启用DNS流量监测",
+                "key": "dns.enabled",
+                "type": "boolean",
+                "desc": "是否启用DNS流量监测",
+                "default": true
+            },
+            {
+                "name": "DNS端口",
+                "key": "dns.ports",
+                "type": "list.int",
+                "desc": "配置侦听DNS流量的端口，多个端口用逗号分隔。",
+                "default": [53]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "HTTP流量数据",
+        "templateId": "http",
+        "field": [
+            {
+                "name": "启用HTTP流量监测",
+                "key": "http.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用HTTP流量监测",
+                "default": true
+            },
+            {
+                "name": "HTTP端口",
+                "key": "http.ports",
+                "type": "list.int",
+                "desc": "配置侦听HTTP流量的端口，多个端口用逗号分隔。",
+                "default": [80, 8080, 8000, 5000, 8002]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "Memcache流量数据",
+        "templateId": "memcache",
+        "field": [
+            {
+                "name": "启用Memcache流量监测",
+                "key": "http.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用Memcache流量监测",
+                "default": true
+            },
+            {
+                "name": "Memcache端口",
+                "key": "memcache.ports",
+                "type": "list.int",
+                "desc": "配置侦听Memcache流量的端口，多个端口用逗号分隔。",
+                "default": [11211]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "MongoDB流量数据",
+        "templateId": "mongodb",
+        "field": [
+            {
+                "name": "启用MongoDB流量监测",
+                "key": "mongodb.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用MongoDB流量监测",
+                "default": true
+            },
+            {
+                "name": "MongoDB端口",
+                "key": "mongodb.ports",
+                "type": "list.int",
+                "desc": "配置监听MongoDB流量的端口，多个端口用逗号分隔。",
+                "default": [27017]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "MySQL流量数据",
+        "templateId": "mysql",
+        "field": [
+            {
+                "name": "启用MySQL流量监测",
+                "key": "mysql.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用MySQL流量监测",
+                "default": true
+            },
+            {
+                "name": "MySQL端口",
+                "key": "mysql.ports",
+                "type": "list.int",
+                "desc": "配置监听MySQL流量的端口，多个端口用逗号分隔。",
+                "default": [3306,3307]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "PostgreSQL流量数据",
+        "templateId": "pgsql",
+        "field": [
+            {
+                "name": "启用PostgreSQL流量监测",
+                "key": "pgsql.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用PostgreSQL流量监测",
+                "default": true
+            },
+            {
+                "name": "PostgreSQL端口",
+                "key": "pgsql.ports",
+                "type": "list.int",
+                "desc": "配置监听PostgreSQL流量的端口，多个端口用逗号分隔。",
+                "default": [5432]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "Redis流量数据",
+        "templateId": "redis",
+        "field": [
+            {
+                "name": "启用Redis流量监测",
+                "key": "redis.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用Redis流量监测",
+                "default": true
+            },
+            {
+                "name": "Redis端口",
+                "key": "redis.ports",
+                "type": "list.int",
+                "desc": "配置监听Redis流量的端口，多个端口用逗号分隔。",
+                "default": [6379]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "Thrift流量数据",
+        "templateId": "thrift",
+        "field": [
+            {
+                "name": "启用Thrift流量监测",
+                "key": "thrift.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用Thrift流量监测",
+                "default": true
+            },
+            {
+                "name": "Thrift端口",
+                "key": "thrift.ports",
+                "type": "list.int",
+                "desc": "配置监听Thrift流量的端口，多个端口用逗号分隔。",
+                "default": [9090]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "NFS流量数据",
+        "templateId": "nfs",
+        "field": [
+            {
+                "name": "启用NFS流量监测",
+                "key": "nfs.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用NFS流量监测",
+                "default": true
+            },
+            {
+                "name": "NFS端口",
+                "key": "nfs.ports",
+                "type": "list.int",
+                "desc": "配置监听NFS流量的端口，多个端口用逗号分隔。",
+                "default": [2049]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "TLS流量数据",
+        "templateId": "tls",
+        "field": [
+            {
+                "name": "启用TLS流量监测",
+                "key": "tls.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用TLS流量监测",
+                "default": true
+            },
+            {
+                "name": "TLS端口",
+                "key": "tls.ports",
+                "type": "list.int",
+                "desc": "配置监听TLS流量的端口，多个端口用逗号分隔。",
+                "default": [443,993,995,5223,8443,8883,9243]
+            }
+        ]
+    },
+    {
+        "probeType": "Packetbeat",
+        "templateName": "SIP流量数据",
+        "templateId": "sip",
+        "field": [
+            {
+                "name": "启用SIP流量监测",
+                "key": "sip.enabled",
+                "type": "boolean",
+                "desc": "是否启用启用SIP流量监测",
+                "default": true
+            },
+            {
+                "name": "SIP端口",
+                "key": "sip.ports",
+                "type": "list.int",
+                "desc": "配置监听SIP流量的端口，多个端口用逗号分隔。",
+                "default": [5060]
+            }
+        ]
+    }
+]

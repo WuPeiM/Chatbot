@@ -6,11 +6,11 @@ const DataReceive = () => import('@log/views/manage/logManage/dataReceive/index.
 // const LogMonitor = () => import('@log/views/manage/logManage/logMonitor/index.vue')
 // const OperatePolicy = () => import('@log/views/manage/logManage/logMonitor/components/operatePolicy.vue')
 // // 日志节点
-// const LogNode = () => import('@log/views/nodeManage/logNode.vue')
+const LogNode = () => import('@log/views/manage/logManage/logNode/index.vue')
 // // 采集配置
-// const CollectionConfig = () => import('@log/views/manage/collectionConfig/index.vue')
-// const AddConfig = () => import('@log/views/manage/collectionConfig/addConfig.vue')
-// const TempConfig = () => import('@log/views/manage/collectionConfig/tempConfig.vue')
+const CollectionConfig = () => import('@log/views/manage/collectionConfig/index.vue')
+const AddConfig = () => import('@log/views/manage/collectionConfig/addConfig.vue')
+const TempConfig = () => import('@log/views/manage/collectionConfig/tempConfig.vue')
 // // 日志分组
 // const LogGroup = () => import('@log/views/manage/logGroup/index.vue')
 // // 日志分组规则
@@ -84,7 +84,7 @@ export const frameRouter = [
         meta: {
             title: '数据接收'
         }
-    }
+    },
     // {
     //     path: '/manage/logManage/logMonitor',
     //     name: 'LogMonitor',
@@ -113,42 +113,42 @@ export const frameRouter = [
     //         parentIds: ['LogMonitor']
     //     }
     // },
-    // {
-    //     path: '/manage/nodeManage/logNode',
-    //     name: 'LogNode',
-    //     component: LogNode,
-    //     meta: {
-    //         title: '日志节点'
-    //     }
-    // },
-    // {
-    //     path: '/manage/logManage/collectionConfig',
-    //     name: 'CollectionConfig',
-    //     component: CollectionConfig,
-    //     meta: {
-    //         title: '采集配置'
-    //     }
-    // },
-    // {
-    //     path: '/manage/logManage/addConfig',
-    //     name: 'AddConfig',
-    //     component: AddConfig,
-    //     meta: {
-    //         title: '新增配置',
-    //         activeMenu: 'CollectionConfig',
-    //         parentIds: ['CollectionConfig']
-    //     }
-    // },
-    // {
-    //     path: '/manage/logManage/tempConfig',
-    //     name: 'TempConfig',
-    //     component: TempConfig,
-    //     meta: {
-    //         title: '配置页面',
-    //         activeMenu: 'CollectionConfig',
-    //         parentIds: ['CollectionConfig']
-    //     }
-    // },
+    {
+        path: '/manage/logManage/logNode',
+        name: 'LogNode',
+        component: LogNode,
+        meta: {
+            title: '日志节点'
+        }
+    },
+    {
+        path: '/manage/logManage/collectionConfig',
+        name: 'CollectionConfig',
+        component: CollectionConfig,
+        meta: {
+            title: '采集配置'
+        }
+    },
+    {
+        path: '/manage/logManage/addConfig',
+        name: 'AddConfig',
+        component: AddConfig,
+        meta: {
+            title: '新增配置',
+            activeMenu: 'CollectionConfig',
+            parentIds: ['CollectionConfig']
+        }
+    },
+    {
+        path: '/manage/logManage/tempConfig',
+        name: 'TempConfig',
+        component: TempConfig,
+        meta: {
+            title: '配置页面',
+            activeMenu: 'CollectionConfig',
+            parentIds: ['CollectionConfig']
+        }
+    },
     // {
     //     path: '/manage/logManage/customConfig',
     //     name: 'CustomConfig',
@@ -306,7 +306,27 @@ export const manageMenu = [
                         type: 'operate'
                     }
                 ]
-            }
+            },
+            {
+                name: '日志节点',
+                id: 'LogNode',
+                icon: 'cw-icon weops-log-node',
+                sortIndex: 2,
+                auth: [
+                    {
+                        key: 'checkAuth',
+                        value: false,
+                        label: '查看',
+                        type: 'check'
+                    },
+                    {
+                        key: 'operateAuth',
+                        value: false,
+                        label: '操作',
+                        type: 'operate'
+                    }
+                ]
+            },
             // {
             //     name: '日志监控',
             //     id: 'LogMonitor',
@@ -345,25 +365,25 @@ export const manageMenu = [
             //         }
             //     ]
             // },
-            // {
-            //     name: '采集配置',
-            //     id: 'CollectionConfig',
-            //     icon: 'cw-icon weops-gather',
-            //     auth: [
-            //         {
-            //             key: 'checkAuth',
-            //             value: false,
-            //             label: '查看',
-            //             type: 'check'
-            //         },
-            //         {
-            //             key: 'operateAuth',
-            //             value: false,
-            //             label: '操作',
-            //             type: 'operate'
-            //         }
-            //     ]
-            // }
+            {
+                name: '采集配置',
+                id: 'CollectionConfig',
+                icon: 'cw-icon weops-gather',
+                auth: [
+                    {
+                        key: 'checkAuth',
+                        value: false,
+                        label: '查看',
+                        type: 'check'
+                    },
+                    {
+                        key: 'operateAuth',
+                        value: false,
+                        label: '操作',
+                        type: 'operate'
+                    }
+                ]
+            }
         ]
     }
 ]

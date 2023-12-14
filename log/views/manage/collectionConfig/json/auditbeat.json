@@ -1,0 +1,57 @@
+[
+    {
+        "probeType": "Auditbeat",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default": "# ============================== Auditbeat modules ==============================\nauditbeat.modules:\n- module: file_integrity\n  paths:\n  - /bin\n  - /usr/bin\n  - /sbin\n  - /usr/sbin\n  - /etc\n\n- module: system\n  datasets:\n    - package # Installed, updated, and removed packages\n\n  period: 2m # The frequency at which the datasets check for changes\n\n- module: system\n  datasets:\n    - host    # General host information, e.g. uptime, IPs\n    - login   # User logins, logouts, and system boots.\n    - process # Started and stopped processes\n    - socket  # Opened and closed sockets\n    - user    # User information\n\n  # How often datasets send state updates with the\n  # current state of the system (e.g. all currently\n  # running processes, all open sockets).\n  state.period: 12h\n\n  # Enabled by default. Auditbeat will read password fields in\n  # /etc/passwd and /etc/shadow and store a hash locally to\n  # detect any changes.\n  user.detect_password_changes: true\n\n  # File patterns of the login record files.\n  login.wtmp_file_pattern: /var/log/wtmp*\n  login.btmp_file_pattern: /var/log/btmp*\n# ============================== Filebeat outputs ===============================\noutput.kafka:\n  hosts: [{{host}}]\n  topic: 'auditbeat'\n  compression: gzip\n# ================================= Processors =================================\nprocessors:\n- add_host_metadata: ~\n- add_cloud_metadata: ~\n- add_docker_metadata: ~"
+            }
+        ]
+    },
+    {
+        "probeType": "Auditbeat",
+        "templateName": "文件变化日志",
+        "templateId": "fileintegrity",
+        "field": [
+            {
+                "name": "目录或文件路径",
+                "key": "fileintegrity.paths",
+                "type": "list",
+                "desc": "监听的文件路径或目录路径，若输入目录路径，将监听目录下的所有文件。",
+                "default": ["/bin"]
+            }
+        ]
+    },
+    {
+        "probeType": "Auditbeat",
+        "templateName": "系统变更日志",
+        "templateId": "system",
+        "field": [
+            {
+                "name": "系统模块",
+                "key": "system.datasets",
+                "type": "list",
+                "desc": "监听的系统模块，可填项为：host（主机变更记录，如IP、启动时间），login（用户登录登出记录），process（进程启停记录），socket（socket启停记录），user（用户变更记录）",
+                "default": ["host","login","process","socket","user"]
+            },
+            {
+                "name": "变更检测频率",
+                "key": "system.period",
+                "type": "text",
+                "desc": "检查系统变更的频率，检查到变更时上报日志，推荐默认配置2分钟。",
+                "default": "2m"
+            },
+            {
+                "name": "数据上报频率",
+                "key": "system.state.period",
+                "type": "text",
+                "default": "12h",
+                "desc": "上报系统数据的频率（无论是否发生变更），推荐默认配置12小时。"
+            }
+        ]
+    }
+]

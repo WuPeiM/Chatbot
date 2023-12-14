@@ -1,0 +1,467 @@
+[
+    {
+        "probeType": "Filebeat",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default":"# ============================== Filebeat inputs ===============================\nfilebeat.inputs:\n- type: filestream\n  id: filestream-01\n  enabled: true\n  paths: ['/var/log/*.log']\n\n# ============================== Filebeat modules ==============================\nfilebeat.modules:\n# ============================== Filebeat outputs ===============================\noutput.kafka:\n  hosts: [{{host}}]\n  topic: 'filebeat'\n  compression: gzip\n# ================================= Processors =================================\nprocessors:\n  - add_host_metadata: ~\n  - add_cloud_metadata: ~\n  - add_docker_metadata: ~"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "自定义文本日志",
+        "templateId": "filestream",
+        "field": [
+            {
+                "name": "文件路径",
+                "key": "filestream.paths",
+                "type": "list",
+                "desc": "需要采集的文件路径，可以使用通配符。",
+                "default": ["/var/log/*.log"]
+            },
+            {
+                "name": "是否多行日志",
+                "key": "filestream.multiline.enabled",
+                "type": "boolean",
+                "desc": "开启后可以将日志文档中的多行日志聚合为一条日志进行采集。",
+                "default": false
+            },
+            {
+                "name": "多行日志匹配正则",
+                "key": "filestream.multiline.pattern",
+                "type": "text",
+                "desc": "指定一个正则表达式，以匹配多行日志开头的行。",
+                "default": "^\\["
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "ActiveMQ文本日志",
+        "templateId": "activemq",
+        "field": [
+            {
+                "name": "审计日志开启",
+                "key": "activemq.audit.enabled",
+                "type": "boolean",
+                "desc": "是否启用ActiveMQ审计日志采集功能"
+            },
+            {
+                "name": "审计日志路径",
+                "key": "activemq.audit.paths",
+                "type": "list",
+                "desc": "ActiveMQ审计日志文件路径"
+            },
+            {
+                "name": "普通日志开启",
+                "key": "activemq.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用ActiveMQ普通日志采集功能"
+            },
+            {
+                "name": "普通日志路径",
+                "key": "activemq.log.paths",
+                "type": "list",
+                "desc": "ActiveMQ普通日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Apache文本日志",
+        "templateId": "apache",
+        "field": [
+            {
+                "name": "错误日志开启",
+                "key": "apache.error.enabled",
+                "type": "boolean",
+                "desc": "是否启用Apache错误日志采集功能"
+            },
+            {
+                "name": "错误日志路径",
+                "key": "apache.error.paths",
+                "type": "list",
+                "desc": "Apache错误日志文件路径"
+            },
+            {
+                "name": "访问日志开启",
+                "key": "apache.access.enabled",
+                "type": "boolean",
+                "desc": "是否启用Apache访问日志采集功能"
+            },
+            {
+                "name": "访问日志路径",
+                "key": "apache.access.paths",
+                "type": "list",
+                "desc": "Apache访问日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "CoreDNS文本日志",
+        "templateId": "coredns",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "coredns.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用CoreDNS日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "coredns.log.paths",
+                "type": "list",
+                "desc": "CoreDNS日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Elasticsearch文本日志",
+        "templateId": "elasticsearch",
+        "field": [
+            {
+                "name": "服务日志开启",
+                "key": "elasticsearch.server.enabled",
+                "type": "boolean",
+                "desc": "是否启用Elasticsearch服务日志采集功能"
+            },
+            {
+                "name": "服务日志路径",
+                "key": "elasticsearch.server.paths",
+                "type": "list",
+                "desc": "Elasticsearch服务日志文件路径"
+            },
+            {
+                "name": "GC日志开启",
+                "key": "elasticsearch.gc.enabled",
+                "type": "boolean",
+                "desc": "是否启用Elasticsearch GC日志采集功能"
+            },
+            {
+                "name": "GC日志路径",
+                "key": "elasticsearch.gc.paths",
+                "type": "list",
+                "desc": "Elasticsearch GC日志文件路径"
+            },
+            {
+                "name": "审计日志开启",
+                "key": "elasticsearch.audit.enabled",
+                "type": "boolean",
+                "desc": "是否启用Elasticsearch审计日志采集功能"
+            },
+            {
+                "name": "审计日志路径",
+                "key": "elasticsearch.audit.paths",
+                "type": "list",
+                "desc": "Elasticsearch审计日志文件路径"
+            },
+            {
+                "name": "慢查询日志开启",
+                "key": "elasticsearch.slowlog.enabled",
+                "type": "boolean",
+                "desc": "是否启用Elasticsearch慢查询日志采集功能"
+            },
+            {
+                "name": "慢查询日志路径",
+                "key": "elasticsearch.slowlog.paths",
+                "type": "list",
+                "desc": "Elasticsearch慢查询日志文件路径"
+            },
+            {
+                "name": "Deprecation日志开启",
+                "key": "elasticsearch.deprecation.enabled",
+                "type": "boolean",
+                "desc": "是否启用Elasticsearch Deprecation日志采集功能"
+            },
+            {
+                "name": "Deprecation日志路径",
+                "key": "elasticsearch.deprecation.paths",
+                "type": "list",
+                "desc": "Elasticsearch Deprecation日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "IIS文本日志",
+        "templateId": "iis",
+        "field": [
+            {
+                "name": "访问日志开启",
+                "key": "iis.access.enabled",
+                "type": "boolean",
+                "desc": "是否启用IIS访问日志采集功能"
+            },
+            {
+                "name": "访问日志路径",
+                "key": "iis.access.paths",
+                "type": "list",
+                "desc": "IIS访问日志文件路径"
+            },
+            {
+                "name": "错误日志开启",
+                "key": "iis.error.enabled",
+                "type": "boolean",
+                "desc": "是否启用IIS错误日志采集功能"
+            },
+            {
+                "name": "错误日志路径",
+                "key": "iis.error.paths",
+                "type": "list",
+                "desc": "IIS错误日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Kafka文本日志",
+        "templateId": "kafka",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "kafka.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用Kafka日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "kafka.log.paths",
+                "type": "list",
+                "desc": "Kafka日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "MongoDB文本日志",
+        "templateId": "mongodb",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "mongodb.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用MongoDB日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "mongodb.log.paths",
+                "type": "list",
+                "desc": "MongoDB日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "MSSQL文本日志",
+        "templateId": "mssql",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "mssql.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用Mssql日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "mssql.log.paths",
+                "type": "list",
+                "desc": "Mssql日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "MySQL文本日志",
+        "templateId": "mysql",
+        "field": [
+            {
+                "name": "错误日志开启",
+                "key": "mysql.error.enabled",
+                "type": "boolean",
+                "desc": "是否启用MySQL错误日志采集功能"
+            },
+            {
+                "name": "错误日志路径",
+                "key": "mysql.error.paths",
+                "type": "list",
+                "desc": "MySQL错误日志文件路径"
+            },
+            {
+                "name": "慢查询日志开启",
+                "key": "mysql.slowlog.enabled",
+                "type": "boolean",
+                "desc": "是否启用MySQL慢查询日志采集功能"
+            },
+            {
+                "name": "慢查询日志路径",
+                "key": "mysql.slowlog.paths",
+                "type": "list",
+                "desc": "MySQL慢查询日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Nginx文本日志",
+        "templateId": "nginx",
+        "field": [
+            {
+                "name": "访问日志开启",
+                "key": "nginx.access.enabled",
+                "type": "boolean",
+                "desc": "是否启用Nginx访问日志采集功能"
+            },
+            {
+                "name": "访问日志路径",
+                "key": "nginx.access.paths",
+                "type": "list",
+                "desc": "Nginx访问日志文件路径"
+            },
+            {
+                "name": "错误日志开启",
+                "key": "nginx.error.enabled",
+                "type": "boolean",
+                "desc": "是否启用Nginx错误日志采集功能"
+            },
+            {
+                "name": "错误日志路径",
+                "key": "nginx.error.paths",
+                "type": "list",
+                "desc": "Nginx错误日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Oracle文本日志",
+        "templateId": "oracle",
+        "field": [
+            {
+                "name": "审计日志开启",
+                "key": "oracle.audit.enabled",
+                "type": "boolean",
+                "desc": "是否启用Oracle审计日志采集功能"
+            },
+            {
+                "name": "审计日志路径",
+                "key": "oracle.audit.paths",
+                "type": "list",
+                "desc": "Oracle审计日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "PostgreSQL文本日志",
+        "templateId": "postgresql",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "postgresql.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用PostgreSQL日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "postgresql.log.paths",
+                "type": "list",
+                "desc": "PostgreSQL日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "RabbitMQ文本日志",
+        "templateId": "rabbitmq",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "rabbitmq.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用RabbitMQ日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "rabbitmq.log.paths",
+                "type": "list",
+                "desc": "RabbitMQ日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Redis文本日志",
+        "templateId": "redis",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "redis.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用Redis日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "redis.log.paths",
+                "type": "list",
+                "desc": "Redis日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "Tomcat文本日志",
+        "templateId": "tomcat",
+        "field": [
+            {
+                "name": "日志开启",
+                "key": "tomcat.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用Tomcat日志采集功能"
+            },
+            {
+                "name": "日志路径",
+                "key": "tomcat.log.paths",
+                "type": "list",
+                "desc": "Tomcat日志文件路径"
+            }
+        ]
+    },
+    {
+        "probeType": "Filebeat",
+        "templateName": "ActiveMQ文本日志",
+        "templateId": "zookeeper",
+        "field": [
+            {
+                "name": "审计日志开启",
+                "key": "zookeeper.audit.enabled",
+                "type": "boolean",
+                "desc": "是否启用ZooKeeper审计日志采集功能"
+            },
+            {
+                "name": "审计日志路径",
+                "key": "zookeeper.audit.paths",
+                "type": "list",
+                "desc": "ZooKeeper审计日志文件路径"
+            },
+            {
+                "name": "普通日志开启",
+                "key": "zookeeper.log.enabled",
+                "type": "boolean",
+                "desc": "是否启用ZooKeeper普通日志采集功能"
+            },
+            {
+                "name": "普通日志路径",
+                "key": "zookeeper.log.paths",
+                "type": "list",
+                "desc": "ZooKeeper普通日志文件路径"
+            }
+        ]
+    }
+]

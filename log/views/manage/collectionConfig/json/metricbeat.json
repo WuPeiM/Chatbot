@@ -1,0 +1,190 @@
+[
+    {
+        "probeType": "Metricbeat",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default":"#========================== Metricbeat Modules  =============================\nmetricbeat.modules:\n# ============================== Metricbeat outputs ===============================\noutput.kafka:\n  hosts: [{{host}}]\n  topic: 'filebeat'\n  compression: gzip\n# ================================= Processors =================================\nprocessors:\n  - add_host_metadata: ~\n  - add_cloud_metadata: ~\n  - add_docker_metadata: ~"
+            }
+        ]
+    },
+    {
+        "probeType": "Metricbeat",
+        "templateName": "System指标日志",
+        "templateId": "system",
+        "field": [
+            {
+                "name": "System指标日志采集开启",
+                "key": "system.metri.enabled",
+                "type": "boolean",
+                "desc": "是否启用系统指标数据采集功能",
+                "default": true
+            },
+            {
+                "name": "采集的指标类型",
+                "key": "system.metri.metricsets",
+                "type": "list",
+                "desc": "设置需要采集的指标类型，包括CPU 使用率、CPU 负载平均值、内存使用情况、网络 IO、进程指标、进程摘要、系统运行时间、套接字摘要等",
+                "default": ["cpu","load","memory","network","process","process_summary","uptime","socket_summary"]
+            },
+            {
+                "name": "采集时间间隔",
+                "key": "system.metri.period",
+                "type": "text",
+                "desc": "收集指标数据的时间间隔",
+                "default": "10s"
+            },
+            {
+                "name": "采集的进程名称",
+                "key": "system.metri.processes",
+                "type": "list",
+                "desc": "采集指标数据的进程名称",
+                "default": [".*"]
+            }
+        ]
+    },
+    {
+        "probeType": "Metricbeat",
+        "templateName": "Windows系统指标日志",
+        "templateId": "windows",
+        "field": [
+            {
+                "name": "windows系统性能计数器指标采集开启",
+                "key": "window.perfmon.metri.enabled",
+                "type": "boolean",
+                "desc": "是否启用windows系统性能计数器指标采集功能",
+                "default": true
+            },
+            {
+                "name": "是否忽略不存在的性能计数器",
+                "key": "window.perfmon.metri.perfmon.ignore",
+                "type": "boolean",
+                "desc": "如果设置为“是”，则 Metricbeat 将忽略不存在的性能计数器，否则将记录错误消息",
+                "default": true
+            },
+            {
+                "name": "是否按实例分组",
+                "key": "window.perfmon.metri.perfmon.group",
+                "type": "boolean",
+                "desc": "如果设置为“是”，则 Metricbeat 将按实例分组，否则将按计数器名称分组。",
+                "default": true
+            },
+            {
+                "name": "性能计数器指标采集时间间隔",
+                "key": "window.perfmon.metri.period",
+                "type": "text",
+                "desc": "收集性能计数器指标数据的时间间隔",
+                "default": "10s"
+            },
+            {
+                "name": "性能计数器查询对象",
+                "key": "window.perfmon.queries.object",
+                "type": "text",
+                "desc": "性能计数器所属的对象，通常代表了一类性能计数器。例如，Process可用于监控与进程相关的性能计数器",
+                "default": "Process"
+            },
+            {
+                "name": "性能计数器名称",
+                "key": "window.perfmon.queries.counters.name",
+                "type": "text",
+                "desc": "要采集的性能计数器的名称，它指定了要监视的性能指标，例如 % Processor Time（处理器使用率）或 Available MBytes（可用内存）等",
+                "default": "% Processor Time"
+            },
+            {
+                "name": "性能计数器字段",
+                "key": "window.perfmon.queries.counters.field",
+                "type": "text",
+                "desc": "用户自定义的字段名称，用于存储从性能计数器中采集的值",
+                "default": ""
+            },
+            {
+                "name": "性能计数器数据类型",
+                "key": "window.perfmon.queries.counters.format",
+                "type": "text",
+                "desc": "指定了采集的计数器值的数据类型。通常，这可以是 int（整数）或 float（浮点数）",
+                "default": "float"
+            },
+            {
+                "name": "windows服务指标采集开启",
+                "key": "window.service.metri.enabled",
+                "type": "boolean",
+                "desc": "是否启用windows系统服务指标采集功能",
+                "default": true
+            },
+            {
+                "name": "服务指标采集时间间隔",
+                "key": "window.service.metri.period",
+                "type": "text",
+                "desc": "收集服务指标数据的时间间隔",
+                "default": "60s"
+            }
+        ]
+    },
+    {
+        "probeType": "Metricbeat",
+        "templateName": "Linux系统指标日志",
+        "templateId": "linux",
+        "field": [
+            {
+                "name": "Linux指标日志开启",
+                "key": "linux.metri.enabled",
+                "type": "boolean",
+                "desc": "是否启用系统指标数据采集功能",
+                "default": true
+            },
+            {
+                "name": "采集的指标类型",
+                "key": "linux.metri.metricsets",
+                "type": "list",
+                "desc": "设置需要采集的指标类型，包括内存页面信息的指标、内存使用情况的指标等",
+                "default": ["pageinfo","memory"]
+            },
+            {
+                "name": "采集时间间隔",
+                "key": "linux.metri.period",
+                "type": "text",
+                "desc": "收集指标数据的时间间隔",
+                "default": "10s"
+            }
+        ]
+    },
+    {
+        "probeType": "Metricbeat",
+        "templateName": "Docker指标日志",
+        "templateId": "docker",
+        "field": [
+            {
+                "name": "Docker指标日志开启",
+                "key": "docker.metri.enabled",
+                "type": "boolean",
+                "desc": "是否启用Docker指标数据采集功能",
+                "default": true
+            },
+            {
+                "name": "采集的指标类型",
+                "key": "docker.metri.metricsets",
+                "type": "list",
+                "desc": "设置需要采集的指标类型，包括容器指标、CPU指标、内存指标、磁盘IO指标、事件指标、健康检查指标、Docker守护进程的信息、网络指标等",
+                "default": ["container","cpu","memory","diskio","event","healthcheck","network"]
+            },
+            {
+                "name": "Docker主机地址",
+                "key": "docker.metri.hosts",
+                "type": "list",
+                "desc": "用于连接到Docker API并收集指标",
+                "default": ""
+            },
+            {
+                "name": "采集时间间隔",
+                "key": "docker.metri.period",
+                "type": "text",
+                "desc": "收集指标数据的时间间隔",
+                "default": "10s"
+            }
+        ]
+    }
+]

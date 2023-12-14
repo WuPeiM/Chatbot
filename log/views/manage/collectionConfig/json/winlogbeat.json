@@ -1,0 +1,75 @@
+[
+    {
+        "probeType": "Winlogbeat",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default": "# ======================== Winlogbeat specific options =========================\nwinlogbeat.event_logs:\n  - name: Application\n    ignore_older: 72h\n\n  - name: System\n\n  - name: Security\n\n  - name: Microsoft-Windows-Sysmon/Operational\n\n  - name: Windows PowerShell\n    event_id: 400, 403, 600, 800\n\n  - name: Microsoft-Windows-PowerShell/Operational\n    event_id: 4103, 4104, 4105, 4106\n\n  - name: ForwardedEvents\n    tags: [forwarded]\n# ============================== Winlogbeat outputs ===============================\noutput:\n  hosts: [{{host}}]\n  topic: 'winlogbeat'\n  compression: gzip\n# ================================= Processors =================================\nprocessors:\n  - add_host_metadata: ~\n  - add_cloud_metadata: ~\n  - add_docker_metadata: ~"
+            }
+        ]
+    },
+    {
+        "probeType": "Winlogbeat",
+        "templateName": "应用程序日志",
+        "templateId": "application",
+        "field": [
+            {
+                "name": "日志发送时间段",
+                "key": "application.ignore_older",
+                "type": "text",
+                "default": "72h",
+                "desc":  "定义发送日志的时间段，控制发送的数据量，避免发送过时的数据"
+            },
+            {
+                "name": "收集事件ID",
+                "key": "application.event_id",
+                "type": "text",
+                "desc": "用来确定收集的事件类型，例如，1000表示应用程序崩溃事件，1001表示应用程序关闭事件，1002表示应用程序启动事件等。"
+            }
+        ]
+    },
+    {
+        "probeType": "Winlogbeat",
+        "templateName": "安全事件日志",
+        "templateId": "security",
+        "field": [
+        {
+            "name": "日志发送时间段",
+            "key": "security.ignore_older",
+            "type": "text",
+            "default": "72h",
+            "desc":  "定义发送日志的时间段，控制发送的数据量，避免发送过时的数据"
+        },
+        {
+            "name": "收集事件ID",
+            "key": "security.event_id",
+            "type": "text",
+            "desc": "用来确定收集的事件类型，例如，4624表示用户成功登录事件，4625表示用户登录失败事件，4634表示用户注销事件，等等。"
+        }
+        ]
+    },
+    {
+        "probeType": "Winlogbeat",
+        "templateName": "系统事件日志",
+        "templateId": "system",
+        "field": [
+            {
+                "name": "日志发送时间段",
+                "key": "system.ignore_older",
+                "type": "text",
+                "default": "72h",
+                "desc":  "定义发送日志的时间段，控制发送的数据量，避免发送过时的数据"
+            },
+            {
+                "name": "收集事件ID",
+                "key": "system.event_id",
+                "type": "text",
+                "desc": "用来确定收集的事件类型，例如1表示进程创建，3表示网络连接等等。"
+            }
+        ]
+    }
+]

@@ -1,0 +1,15 @@
+[
+    {
+        "probeType": "Uniprobe",
+        "templateName": "自定义模板",
+        "templateId": "custom",
+        "field": [
+            {
+                "name": "配置",
+                "key": "config",
+                "type": "script",
+                "default": "device=any\nauto-check=0\nexp-domain={{host}}\njson-path=/root/json\njson-size=100\npcap-path=/root/pcap\npcap-size=1000"
+            }
+        ]
+    }
+]
