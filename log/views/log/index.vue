@@ -260,7 +260,7 @@
     import AceEditor from '@log/views/components/aceEditor/index.vue'
     import logMessageTable from '@log/views/components/logMessageTable.vue'
     import LogTree from './components/logTree.vue'
-    import { LogSearchConfig } from '@/controller/func/logConfigs'
+    import { LogSearchConfig } from '@log/controller/logConfigs'
     import { getMinutesAgoToNow } from '@log/controller/formatTime'
     import { replaceLabel, replaceShader } from '@log/controller/utils'
     import SelectExtractor from './components/selectExtractor.vue'
